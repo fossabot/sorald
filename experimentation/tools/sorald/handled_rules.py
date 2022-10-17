@@ -22,15 +22,15 @@ Sorald can currently repair violations of the following rules:
 
 * [Bug](#bug)
 {% for bug in bugs %}
-    * [{{ bug.title }}]({{ bug.link_to_repair_description }}) ([{{ bug.sonar_url_text }}]({{ bug.sonar_url }})){% endfor %}
+    * [{{ bug.title }}]({{ bug.link_to_repair_description }}) ([{{ bug.sonar_url_text }}]({{ bug.sonar_url }})) (quickfix: {{ bug.quickfix_status }}){% endfor %}
 
 * [Code Smell](#code-smell)
 {% for cs in code_smells %}
-    * [{{ cs.title }}]({{ cs.link_to_repair_description }}) ([{{ cs.sonar_url_text }}]({{ cs.sonar_url }})){% endfor %}
+    * [{{ cs.title }}]({{ cs.link_to_repair_description }}) ([{{ cs.sonar_url_text }}]({{ cs.sonar_url }})) (quickfix: {{ cs.quickfix_status }}){% endfor %}
 
 * [Vulnerability](#vulnerability)
 {% for vulnerability in vulnerabilities %}
-    * [{{ vulnerability.title }}]({{ vulnerability.link_to_repair_description }}) ([{{ vulnerability.sonar_url_text }}]({{ vulnerability.sonar_url }})){% endfor %}
+    * [{{ vulnerability.title }}]({{ vulnerability.link_to_repair_description }}) ([{{ vulnerability.sonar_url_text }}]({{ vulnerability.sonar_url }})) (quickfix: {{ vulnerability.quickfix_status }}){% endfor %}
 
 ### *Bug*
 {% for bug_content in bugs %}
@@ -80,6 +80,7 @@ class ViolationInformation:
     sonar_url_text: str
     repair_description: str
     link_to_repair_description: str
+    quickfix_status: str
 
     def __lt__(self, other):
         return self.title.lower() < other.title.lower()
@@ -180,6 +181,7 @@ def parse_raw_output(
             sonar_url_text=get_sonar_link_text(rule_key),
             repair_description=repair_description,
             link_to_repair_description=get_link_to_repair_description(heading_text),
+            quickfix_status=metadata[jsonkeys.SONAR_METADATA.QUICKFIX_KEY]
         )
 
         violation_type = metadata[jsonkeys.SONAR_METADATA.TYPE]

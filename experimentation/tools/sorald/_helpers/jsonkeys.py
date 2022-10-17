@@ -71,3 +71,8 @@ class SONAR_METADATA:
     TITLE = "title"
     TYPE = "type"
     RULE_SPECIFICATION = "ruleSpecification"
+    QUICKFIX_KEY = "quickfix"
+
+    class QUICKFIX:
+        UNKNOWN = "unknown"
+        COVERED = "covered"
